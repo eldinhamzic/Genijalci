@@ -6,6 +6,7 @@ Moderni **mobile-first** MVP za produženi boravak djece (1–4 razred), fokusir
 
 - ✅ Login (JWT cookie + role-based API zaštita)
 - ✅ Dashboard za staff: lista djece, veliki check-in/check-out dugmići, stanje prisustva
+- ✅ Poseban roditeljski dashboard: samo vlastito dijete, status prisustva, zadaće, kontakti osoblja
 - ✅ Prikaz roditelja i kontakt podataka
 - ✅ Sedmični jelovnik (7 dana)
 - ✅ Osnovni chat API (1:1 + broadcast prema roditeljima)
