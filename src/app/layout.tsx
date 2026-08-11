@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Genijalci Boravak",
-  description: "MVP za produženi boravak djece"
+  description: "Frontend MVP za produženi boravak djece"
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="bs">
       <body>{children}</body>
