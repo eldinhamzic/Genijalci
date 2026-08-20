@@ -174,6 +174,7 @@ export default function DemoApp() {
     updateWorkerChild(id, { status: "Otišao", leaveTime: now });
   }
 
+  // Keep parent, worker, and owner views aligned on the same absence state.
   function reportChildAbsence(id: string) {
     const now = toTime();
     const notice = `Roditelj je prijavio da dijete danas neće doći u ${now}.`;
