@@ -1,4 +1,4 @@
-export type Role = "owner" | "worker" | "parent";
+﻿export type Role = "owner" | "worker" | "parent";
 
 export type OwnerSection = "dashboard" | "children" | "child-detail" | "finance" | "team" | "groups" | "menu" | "messages" | "board";
 export type WorkerSection = "today" | "children" | "child-detail" | "departures" | "menu" | "messages" | "board";
@@ -564,7 +564,7 @@ export const parentChats: ChatThread[] = [
     subtitle: "Amir Kovač",
     category: "individual",
     messages: [
-      { id: "m11", from: "owner", sender: "Amir Kovač", time: "09:20", text: "Dobrodošli u demo pregled. Sve informacije su lokalne." }
+      { id: "m11", from: "owner", sender: "Amir Kovač", time: "09:20", text: "Dobrodošli u aplikaciju. Sve informacije su lokalne." }
     ]
   }
 ];
@@ -574,3 +574,8 @@ export const ownerTasks: WorkTask[] = [
   { id: "t2", title: "Provjeriti Adinovu zadaću", target: "Adin Karić", scope: "individual", done: false, due: "Danas do 16:00", note: "Javiti roditelju nakon provjere." },
   { id: "t3", title: "Ažurirati jelovnik", target: "Pčelice", scope: "group", done: true, due: "Završeno", note: "Kuhinja je potvrdila." }
 ];
+
+
+
+
+

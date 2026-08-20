@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { bs } from "date-fns/locale";
 import DemoRoleSwitcher from "@/components/demo-role-switcher";
-import { NavButton, SectionHeader, სტატCard, StatusBadge, StatCard } from "@/components/ui";
+import { NavButton, SectionHeader, StatCard, StatusBadge } from "@/components/ui";
 import {
   appDate,
   ownerChats,
@@ -128,14 +128,14 @@ export default function DemoApp() {
   const navTone = roleTone(role);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("genijalci-demo-role");
+    const saved = window.localStorage.getItem("genijalac-role");
     if (saved === "owner" || saved === "worker" || saved === "parent") {
       setRole(saved);
     }
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem("genijalci-demo-role", role);
+    window.localStorage.setItem("genijalac-role", role);
   }, [role]);
 
   useEffect(() => {
@@ -201,16 +201,16 @@ export default function DemoApp() {
         grade: ownerNewChild.grade,
         school: ownerNewChild.school.trim(),
         groupId: ownerNewChild.groupId,
-        parentName: "Demo roditelj",
+        parentName: "Roditelj",
         parentPhone: "+38761110000",
-        parentEmail: "demo.roditelj@mail.ba",
-        pickupPeople: [{ name: "Demo roditelj", relation: "roditelj", phone: "+38761110000" }],
+        parentEmail: "roditelj@mail.ba",
+        pickupPeople: [{ name: "Roditelj", relation: "roditelj", phone: "+38761110000" }],
         term: "13:00–17:00",
         statusToday: "Očekujemo",
         lunchDone: false,
         homeworkDone: false,
         allergies: [],
-        notes: ["Novi demo zapis."],
+        notes: ["Novi zapis."],
         attendanceHistory: [],
         invoices: [{ month: "August 2026", status: "Čeka uplatu", amount: "220 KM" }],
         homework: [],
@@ -265,11 +265,11 @@ export default function DemoApp() {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#f8fafc,_#eef2f7_65%,_#e2e8f0)] text-slate-900">
       <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-[88rem] flex-col gap-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <div className="mx-auto flex max-w-[96rem] flex-col gap-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Genijalci Boravak</p>
-              <h1 className="text-lg font-semibold text-slate-900">Demo pregled kao {role === "owner" ? "Vlasnik" : role === "worker" ? "Radnik" : "Roditelj"}</h1>
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Genijalac</p>
+              <h1 className="text-lg font-semibold text-slate-900">Edukativni centar</h1>
             </div>
             <div className="lg:hidden">
               <DemoRoleSwitcher role={role} onChange={setActiveRole} />
@@ -281,13 +281,13 @@ export default function DemoApp() {
         </div>
       </header>
 
-        <div className="mx-auto flex w-full max-w-[88rem] gap-0 px-3 pb-24 pt-4 lg:gap-8 lg:px-8">
+        <div className="mx-auto flex w-full max-w-[96rem] gap-0 px-3 pb-24 pt-4 lg:gap-8 lg:px-8">
           <aside className="hidden w-72 shrink-0 lg:block">
             <div className="sticky top-24 space-y-3">
               <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Genijalci</p>
-                <p className="mt-1 text-lg font-semibold text-slate-900">Produženi boravak</p>
-                <p className="mt-1 text-sm text-slate-500">Demo SaaS pregled</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Genijalac</p>
+                <p className="mt-1 text-lg font-semibold text-slate-900">Edukativni centar</p>
+                <p className="mt-1 text-sm text-slate-500">Organizovan pregled za roditelje, radnike i direktora</p>
               </div>
               <div className="space-y-2">
                 {(role === "owner" ? ownerNav : role === "worker" ? workerNav : parentNav).map((item) => (
@@ -502,7 +502,7 @@ function OwnerView({
   return (
     <>
       {section === "dashboard" ? (
-        <div className="mx-auto w-full max-w-[1440px] space-y-4">
+        <div className="mx-auto w-full max-w-[1600px] space-y-4">
           <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm text-slate-500">Dobrodošli, Amir</p>
             <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">{todayLabel()}</h2>
@@ -628,7 +628,7 @@ function OwnerView({
           </div>
         </div>
       ) : section === "children" ? (
-        <div className="mx-auto w-full max-w-[1080px] space-y-4">
+        <div className="mx-auto w-full max-w-[1280px] space-y-4">
           <div className="flex items-start justify-between gap-3">
             <div>
               <h2 className="text-2xl font-semibold">Djeca</h2>
@@ -821,6 +821,75 @@ function OwnerView({
               </div>
             </section>
           )}
+        </div>      ) : section === "messages" ? (
+        <div className="space-y-4">
+          <SectionHeader title="Poruke" subtitle="Grupni i individualni chatovi" />
+          <div className="grid gap-4 xl:grid-cols-[0.72fr_1.28fr]">
+            <aside className="space-y-3">
+              {ownerChats.map((thread, index) => {
+                const last = thread.messages[thread.messages.length - 1];
+                return (
+                  <button
+                    key={thread.id}
+                    type="button"
+                    className={[
+                      "w-full rounded-3xl border p-4 text-left shadow-sm transition",
+                      index === 0 ? "border-slate-900 bg-slate-50" : "border-slate-200 bg-white hover:bg-slate-50"
+                    ].join(" ")}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-semibold text-white">
+                        {thread.title.split(" ").map((part) => part[0]).slice(0, 2).join("")}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="font-semibold text-slate-900">{thread.title}</p>
+                            <p className="text-sm text-slate-500">{thread.subtitle}</p>
+                          </div>
+                          <StatusBadge tone={thread.category === "group" ? "info" : "neutral"}>{thread.category === "group" ? "Grupno" : "Pojedinacno"}</StatusBadge>
+                        </div>
+                        {last ? <p className="mt-3 truncate text-sm text-slate-600">{last.sender}: {last.text}</p> : null}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </aside>
+            <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+              <div className="border-b border-slate-200 bg-slate-50 px-5 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm text-slate-500">Aktivni razgovor</p>
+                    <h3 className="text-lg font-semibold text-slate-900">{ownerChats[0].title}</h3>
+                  </div>
+                  <StatusBadge tone="info">{ownerChats[0].category === "group" ? "Grupni chat" : "Pojedinacno"}</StatusBadge>
+                </div>
+              </div>
+              <div className="space-y-3 bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] px-5 py-5">
+                {ownerChats[0].messages.map((message) => (
+                  <div key={message.id} className={["flex", message.from === "owner" ? "justify-end" : "justify-start"].join(" ")}>
+                    <div className={[
+                      "max-w-[82%] rounded-3xl px-4 py-3 text-sm shadow-sm",
+                      message.from === "owner" ? "rounded-br-lg bg-slate-900 text-white" : "rounded-bl-lg border border-slate-200 bg-white text-slate-800"
+                    ].join(" ")}>
+                      <p className="text-xs uppercase tracking-[0.18em] opacity-70">{message.sender} · {message.time}</p>
+                      <p className="mt-1 leading-6">{message.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-slate-200 bg-white px-5 py-4">
+                <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                  <span className="text-sm text-slate-400">Napiši poruku...</span>
+                  <div className="ml-auto flex gap-2">
+                    <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-600">foto</span>
+                    <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-600">pošalji</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       ) : section === "finance" ? (
         <div className="space-y-4">
@@ -1129,7 +1198,7 @@ function WorkerView({
           ))}
         </div>
       ) : section === "child-detail" ? (
-        <div className="mx-auto w-full max-w-[1000px] space-y-4">
+        <div className="mx-auto w-full max-w-[1280px] space-y-4">
           <MobileSectionTabs
             active={section}
             onChange={(value) => setSection(value as WorkerSection)}
@@ -1237,6 +1306,80 @@ function WorkerView({
               </div>
             ))}
           </div>
+        </div>      ) : section === "messages" ? (
+        <div className="space-y-4">
+          <MobileSectionTabs
+            active={section}
+            onChange={(value) => setSection(value as WorkerSection)}
+            items={workerNav}
+          />
+          <SectionHeader title="Poruke" subtitle="Roditelji i direktor" />
+          <div className="grid gap-4 xl:grid-cols-[0.72fr_1.28fr]">
+            <aside className="space-y-3">
+              {workerChats.map((thread, index) => {
+                const last = thread.messages[thread.messages.length - 1];
+                return (
+                  <button
+                    key={thread.id}
+                    type="button"
+                    className={[
+                      "w-full rounded-3xl border p-4 text-left shadow-sm transition",
+                      index === 0 ? "border-slate-900 bg-slate-50" : "border-slate-200 bg-white hover:bg-slate-50"
+                    ].join(" ")}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 text-sm font-semibold text-white">
+                        {thread.title.split(" ").map((part) => part[0]).slice(0, 2).join("")}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="font-semibold text-slate-900">{thread.title}</p>
+                            <p className="text-sm text-slate-500">{thread.subtitle}</p>
+                          </div>
+                          <StatusBadge tone="info">Chat</StatusBadge>
+                        </div>
+                        {last ? <p className="mt-3 truncate text-sm text-slate-600">{last.sender}: {last.text}</p> : null}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </aside>
+            <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+              <div className="border-b border-slate-200 bg-slate-50 px-5 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm text-slate-500">Aktivni razgovor</p>
+                    <h3 className="text-lg font-semibold text-slate-900">{workerChats[0].title}</h3>
+                  </div>
+                  <StatusBadge tone="info">Danas</StatusBadge>
+                </div>
+              </div>
+              <div className="space-y-3 bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] px-5 py-5">
+                {workerChats[0].messages.map((message) => (
+                  <div key={message.id} className={["flex", message.from === "worker" ? "justify-end" : "justify-start"].join(" ")}>
+                    <div className={[
+                      "max-w-[82%] rounded-3xl px-4 py-3 text-sm shadow-sm",
+                      message.from === "worker" ? "rounded-br-lg bg-emerald-600 text-white" : "rounded-bl-lg border border-slate-200 bg-white text-slate-800"
+                    ].join(" ")}>
+                      <p className="text-xs uppercase tracking-[0.18em] opacity-70">{message.sender} · {message.time}</p>
+                      <p className="mt-1 leading-6">{message.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-slate-200 bg-white px-5 py-4">
+                <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                  <span className="text-sm text-slate-400">Napiši poruku roditelju ili direktoru...</span>
+                  <div className="ml-auto flex gap-2">
+                    <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-600">foto</span>
+                    <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-600">pošalji</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       ) : (
         <div className="space-y-4">
@@ -1298,7 +1441,7 @@ function ParentView({ section, setSection, child, children, childId, setChildId,
       {section === "home" ? (
         <>
             <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-              <p className="text-sm text-slate-500">Zdravo, Mirza 👋</p>
+              <p className="text-sm text-slate-500">Zdravo, Mirza </p>
               <h2 className="mt-1 text-2xl font-semibold">{child.name}</h2>
               {hasMultipleChildren ? (
                 <div className="mt-4 flex flex-nowrap gap-2 overflow-x-auto pb-1">
@@ -1403,6 +1546,75 @@ function ParentView({ section, setSection, child, children, childId, setChildId,
               {child.membership.month} · {child.membership.amount}
             </p>
           </div>
+        </section>      ) : section === "messages" ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <SectionHeader title="Poruke" subtitle="Radnik i direktor" />
+          <div className="grid gap-4 xl:grid-cols-[0.72fr_1.28fr]">
+            <aside className="space-y-3">
+              {parentChats.map((thread, index) => {
+                const last = thread.messages[thread.messages.length - 1];
+                return (
+                  <button
+                    key={thread.id}
+                    type="button"
+                    className={[
+                      "w-full rounded-3xl border p-4 text-left shadow-sm transition",
+                      index === 0 ? "border-slate-900 bg-slate-50" : "border-slate-200 bg-white hover:bg-slate-50"
+                    ].join(" ")}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-600 text-sm font-semibold text-white">
+                        {thread.title.split(" ").map((part) => part[0]).slice(0, 2).join("")}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="font-semibold text-slate-900">{thread.title}</p>
+                            <p className="text-sm text-slate-500">{thread.subtitle}</p>
+                          </div>
+                          <StatusBadge tone="info">Cat</StatusBadge>
+                        </div>
+                        {last ? <p className="mt-3 truncate text-sm text-slate-600">{last.sender}: {last.text}</p> : null}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </aside>
+            <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+              <div className="border-b border-slate-200 bg-slate-50 px-5 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm text-slate-500">Aktivni razgovor</p>
+                    <h3 className="text-lg font-semibold text-slate-900">{parentChats[0].title}</h3>
+                  </div>
+                  <StatusBadge tone="info">Danas</StatusBadge>
+                </div>
+              </div>
+              <div className="space-y-3 bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] px-5 py-5">
+                {parentChats[0].messages.map((message) => (
+                  <div key={message.id} className={["flex", message.from === "parent" ? "justify-end" : "justify-start"].join(" ")}>
+                    <div className={[
+                      "max-w-[82%] rounded-3xl px-4 py-3 text-sm shadow-sm",
+                      message.from === "parent" ? "rounded-br-lg bg-rose-600 text-white" : "rounded-bl-lg border border-slate-200 bg-white text-slate-800"
+                    ].join(" ")}>
+                      <p className="text-xs uppercase tracking-[0.18em] opacity-70">{message.sender} · {message.time}</p>
+                      <p className="mt-1 leading-6">{message.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-slate-200 bg-white px-5 py-4">
+                <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                  <span className="text-sm text-slate-400">Napiši poruku...</span>
+                  <div className="ml-auto flex gap-2">
+                    <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-600">foto</span>
+                    <span className="rounded-full bg-slate-200 px-3 py-1 text-xs text-slate-600">pošalji</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
         </section>
       ) : section === "pickup" ? (
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -1477,3 +1689,12 @@ function MobileSectionTabs({
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
