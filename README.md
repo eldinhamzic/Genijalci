@@ -1398,3 +1398,4 @@ Impresionirati:
 * realnim informacijama
 
 Prioritet je da UI izgleda kao **premium, jednostavan i ozbiljan SaaS proizvod za tržište BiH**.
+

@@ -174,6 +174,51 @@ export default function DemoApp() {
     updateWorkerChild(id, { status: "Otišao", leaveTime: now });
   }
 
+  function reportChildAbsence(id: string) {
+    const now = toTime();
+    const notice = `Roditelj je prijavio da dijete danas neće doći u ${now}.`;
+
+    setParentChildrenState((current) =>
+      current.map((child) =>
+        child.id === id
+          ? {
+              ...child,
+              status: "Vani",
+              note: notice
+            }
+          : child
+      )
+    );
+
+    setOwnerChildrenState((current) =>
+      current.map((child) =>
+        child.id === id
+          ? {
+              ...child,
+              statusToday: "Odsutan",
+              arrivalTime: "",
+              leaveTime: "",
+              notes: [notice, ...child.notes.filter((item) => item !== notice)]
+            }
+          : child
+      )
+    );
+
+    setWorkerChildrenState((current) =>
+      current.map((child) =>
+        child.id === id
+          ? {
+              ...child,
+              status: "Nije došao",
+              arrivalTime: "",
+              leaveTime: "",
+              note: notice
+            }
+          : child
+      )
+    );
+  }
+
   function markPaid(id: string) {
     const paidAt = format(new Date(2026, 7, 16), "dd.MM.yyyy.", { locale: bs });
     setFinanceState((current) =>
@@ -380,6 +425,7 @@ export default function DemoApp() {
               pickupDraft={pickupDraft}
               setPickupDraft={setPickupDraft}
               addPickupPerson={addPickupPerson}
+              reportChildAbsence={reportChildAbsence}
             />
           )}
         </main>
@@ -488,6 +534,7 @@ function OwnerView({
 
   const employee = employees.find((item) => item.id === selectedEmployee) ?? employees[0];
   const group = groups.find((item) => item.id === selectedGroup) ?? groups[0];
+  const reportedAbsences = children.filter((item) => item.notes[0]?.includes("danas neće doći"));
   const quickQuery = search.trim().toLowerCase();
   const quickMatches = quickQuery
     ? children.filter((child) =>
@@ -511,6 +558,12 @@ function OwnerView({
                 <StatCard key={stat.label} {...stat} />
               ))}
             </div>
+            {reportedAbsences.length ? (
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+                <p className="font-medium">Prijavljeno odsustvo za danas</p>
+                <p className="mt-1">{reportedAbsences[0].name} neće doći danas.</p>
+              </div>
+            ) : null}
           </section>
 
           <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -1178,6 +1231,11 @@ function WorkerView({
                 </div>
                 <StatusBadge tone={statusTone(item.status)}>{item.status}</StatusBadge>
               </div>
+              {item.status === "Nije došao" ? (
+                <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+                  Roditelj je prijavio da dijete danas neće doći.
+                </div>
+              ) : null}
               <div className="mt-4 flex flex-wrap gap-2">
                 {item.status !== "Prisutan" ? (
                   <button type="button" onClick={() => markArrival(item.id)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white">
@@ -1426,9 +1484,10 @@ type ParentViewProps = {
   pickupDraft: { name: string; relation: string; phone: string };
   setPickupDraft: React.Dispatch<React.SetStateAction<{ name: string; relation: string; phone: string }>>;
   addPickupPerson: () => void;
+  reportChildAbsence: (id: string) => void;
 };
 
-function ParentView({ section, setSection, child, children, childId, setChildId, pickupDraft, setPickupDraft, addPickupPerson }: ParentViewProps) {
+function ParentView({ section, setSection, child, children, childId, setChildId, pickupDraft, setPickupDraft, addPickupPerson, reportChildAbsence }: ParentViewProps) {
   const hasMultipleChildren = children.length > 1;
 
   return (
@@ -1461,11 +1520,35 @@ function ParentView({ section, setSection, child, children, childId, setChildId,
                 </div>
               ) : null}
 
-            <div className="mt-5 rounded-3xl border border-rose-100 bg-rose-50 p-5 text-rose-950">
+              <div className="mt-5 rounded-3xl border border-rose-100 bg-rose-50 p-5 text-rose-950">
               <p className="text-sm text-rose-700">{child.name} je trenutno {child.status === "U boravku" ? "u boravku" : "van boravka"}</p>
-              <p className="mt-1 text-3xl font-semibold">{child.status === "U boravku" ? "Trenutno u boravku" : "Nije u boravku"}</p>
-              <p className="mt-1 text-sm text-rose-700">Došla u {child.arrivalTime ?? "—"}</p>
+              <p className="mt-1 text-3xl font-semibold">{child.status === "U boravku" ? "Trenutno u boravku" : "Danas nije u boravku"}</p>
+              <p className="mt-1 text-sm text-rose-700">
+                {child.status === "Vani" ? "Prijavljeno odsustvo za danas" : `Došla u ${child.arrivalTime ?? "—"}`}
+              </p>
             </div>
+            {child.status === "Vani" ? (
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+                Prijavljeno je da {child.name} danas neće doći.
+              </div>
+            ) : null}
+            {child.status !== "Vani" ? (
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => reportChildAbsence(child.id)}
+                  className="rounded-full bg-amber-500 px-4 py-2 text-sm font-medium text-white"
+                >
+                  Danas neće doći
+                </button>
+              </div>
+            ) : (
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900">
+                  Odsustvo prijavljeno
+                </span>
+              </div>
+            )}
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
               <button type="button" onClick={() => setSection("tasks")} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-slate-800">
                 Zadaća
